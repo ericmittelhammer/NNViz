@@ -1,0 +1,45 @@
+{
+  "name": "nnviz",
+  "description": "A neural network vizualization library.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/eric/nnviz",
+  "author": {
+    "name": "Eric Mittelhammer",
+    "email": "code@ericmittelhammer.com",
+    "url": "ericmittelhammer.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eric/nnviz.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eric/nnviz/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/eric/nnviz/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "dist/nnviz",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^2.1.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "grunt-react": "^0.8.2"
+  },
+  "keywords": [],
+  "dependencies": {
+    "react": "^0.10.0"
+  }
+}
