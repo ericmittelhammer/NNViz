@@ -2,11 +2,15 @@
 <html>
     <head>
         <title></title>
-            <script src="../dist/nnviz.js"></script>
+            <script type="text/javascript" src="lib/react-0.10.0/build/react.js"></script>
+            <script type="text/javascript" src="lib/react-0.10.0/build/JSXTransformer.js"></script>
+            <script type="text/jsx" src="jsx/nnviz.jsx"></script>
     </head>
     <body>
         <script type="text/javascript">
-            exports.init("net", {});
+            setTimeout(function(){
+                 NNViz.init("net", {});
+            }, 50);
         </script>
         <div id="net"></div>
     </body>

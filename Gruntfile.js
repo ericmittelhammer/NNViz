@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['lib/<%= pkg.name %>.js'],
+        src: ['lib/*.js'],
         dest: 'build/<%= pkg.name %>.js'
       },
     },
@@ -70,31 +70,19 @@ module.exports = function(grunt) {
         tasks: ['jshint:test', 'nodeunit']
       },
       jsx: {
-        files: 'jsx/*.jsx',
+        files: 'jsx/**/*.jsx',
         tasks: ['default']
       },
     },
-    react: {
-      single_file_output: {
-        files: {
-          'build/components.js': 'jsx/components.jsx'
-        }
-      }
-    },
     browserify: {
-      dist: {
-        files: {
-          'dist/nnviz.js': ['build/*.js'],
-        },
-        options: {
-          //transform: [require('grunt-react').browserify],
-          bundleOptions: {
-            debug: true,
-            standalone: 'NNViz'
-          }
-        }
+      build: {
+        src: ['jsx/**/*.jsx'],
+        dest: 'build/nnviz.js'
+      },
+      options: {
+        transform: [require('grunt-react').browserify]
       }
-    },
+    }
   });
 
   // These plugins provide necessary tasks.
@@ -107,7 +95,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
 
   // Default task.
-  grunt.registerTask('default', ['concat', "react", "browserify"]);
+  grunt.registerTask('default', ["browserify"]);
   grunt.registerTask('full', ['jshint', 'nodeunit', 'concat', 'uglify', "browserify"]);
 
 };
