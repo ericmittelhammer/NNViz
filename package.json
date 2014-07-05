@@ -29,6 +29,7 @@
     "test": "grunt nodeunit"
   },
   "devDependencies": {
+    "brain": "^0.7.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^2.1.2",
     "grunt-contrib-concat": "~0.3.0",
