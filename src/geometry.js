@@ -11,15 +11,36 @@ var NNViz = (function(nnviz) {
             return (canvasWidth / numColumns);
         },
 
-        nodeRadii: function(sizes, columnWidth, canvasHeight, canvasWidth) {
-          console.log(sizes);
-          return (sizes.map(function(numNodes){
-            if((columnWidth/2) * numNodes < canvasHeight){
-              return (columnWidth/2);
+        /** calculates the radius of the nodes within a layer */
+        nodeRadius: function(size, columnWidth, columnHeight) {
+            if((columnWidth / 2) * size < columnHeight){
+              return (columnWidth / 2);
             } else {
-              return (canvasHeight / numNodes);
+              return (columnHeight / size);
             }
-          }));
+        },
+
+        /** 
+          * calculates the offeset from the top of the column
+          * for each layer
+          */
+        yOffset: function(size, columnHeight, nodeHeight) {
+          //half of the remaining space in the column
+          return (columnHeight - (nodeHeight * size)) / 2;
+        },
+
+        getX: function(layerIndex, columnWidth){
+          return layerIndex * 2 * columnWidth;
+        },
+
+        calculateLayer: function(size, columnWidth, columnHeight, index){
+          var layer = {};
+          layer.numNodes = size;
+          layer.columnWidth = columnWidth;
+          layer.radius = this.nodeRadius(layer.numNodes, columnWidth, columnHeight);
+          layer.yOffset = this.yOffset(layer.numNodes, columnHeight, layer.radius * 2);
+          layer.x = this.getX(index, columnWidth);
+          return layer;
         },
 
         getGeometry: function(sizes, canvasWidth, canvasHeight){
@@ -27,8 +48,9 @@ var NNViz = (function(nnviz) {
           console.log(this);
           g.numColumns = this.numColumns(sizes.length);
           g.columnWidth = this.colWidth(g.numColumns, canvasHeight);
-          g.nodeRadii = this.nodeRadii(sizes, g.columnWidth, canvasHeight, canvasWidth);
-
+          g.layers = sizes.map(function(size, index){
+            return(this.calculateLayer(size, g.columnWidth, canvasHeight, index));
+          }, this);
           return g;
 
         }
