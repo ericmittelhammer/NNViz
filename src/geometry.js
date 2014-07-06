@@ -21,7 +21,7 @@ var NNViz = (function(nnviz) {
         },
 
         /** 
-          * calculates the offeset from the top of the column
+          * calculates the offset from the top of the column
           * for each layer
           */
         yOffset: function(size, columnHeight, nodeHeight) {
@@ -33,6 +33,17 @@ var NNViz = (function(nnviz) {
           return layerIndex * 2 * columnWidth;
         },
 
+        nodeCoords: function(index, layerX, layerY, nodeHeight, radius){
+          var coords = {};
+          coords.x = layerX;
+          coords.y = layerY + (index * nodeHeight);
+          coords.cx = coords.x + radius;
+          coords.cy = coords.y + radius;
+          coords.inputPoint = {x: coords.x, y: coords.cy};
+          coords.outpusPoint = {x: coords.x + (2*radius), y: coords.cy};
+          return coords;
+        },
+
         calculateLayer: function(size, columnWidth, columnHeight, index){
           var layer = {};
           layer.numNodes = size;
@@ -40,6 +51,12 @@ var NNViz = (function(nnviz) {
           layer.radius = this.nodeRadius(layer.numNodes, columnWidth, columnHeight);
           layer.yOffset = this.yOffset(layer.numNodes, columnHeight, layer.radius * 2);
           layer.x = this.getX(index, columnWidth);
+          layer.nodes = [];
+          for(var i=0; i<size; i++){
+            var c =this.nodeCoords(i, layer.x, layer.yOffset, layer.radius * 2, layer.radius);
+            layer.nodes.push(c);
+          }
+
           return layer;
         },
 

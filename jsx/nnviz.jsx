@@ -11,10 +11,8 @@ function lookupsInOrder(lookup) {
 
 var Node = React.createClass({
   render: function() {
-    var cx = this.props.x + this.props.radius;
-    var cy = this.props.y + this.props.radius;
     return(
-      <circle cx={cx} cy={cy} r={this.props.radius} stroke="black" stroke-width="2" fill="none" />
+      <circle cx={this.props.cx} cy={this.props.cy} r={this.props.radius} stroke="black" stroke-width="2" fill="none" />
     );
   }
 });
@@ -23,11 +21,10 @@ var NetworkLayer = React.createClass({
   render: function() {
     var g = this.props.geometry;
     console.log(g);
-    var nodes = [];
-    for(var i=0; i<g.numNodes; i++){
-      console.log(i);
-      nodes.push(<Node x={g.x} y={g.yOffset + (i * g.radius *2)} radius={g.radius} />)
-    }
+    var nodes = g.nodes.map(function(node){
+      return(<Node cx={node.cx} cy={node.cy} radius={g.radius} />)
+    });
+      
     return(<g>{nodes}</g>);
   }
 });
