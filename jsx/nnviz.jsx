@@ -12,7 +12,7 @@ function lookupsInOrder(lookup) {
 var Node = React.createClass({
   render: function() {
     return(
-      <circle cx={this.props.cx} cy={this.props.cy} r={this.props.radius} stroke="black" stroke-width="2" fill="none" />
+      <circle cx={this.props.cx} cy={this.props.cy} r={this.props.radius} fill="#3498db" />
     );
   }
 });
@@ -35,8 +35,9 @@ var Connection = React.createClass({
                  y1={this.props.start.y} 
                  x2={this.props.end.x} 
                  y2={this.props.end.y}
-                 stroke="black"
-                 stroke-width="2" />);
+                 stroke="#34495e"
+                 strokeWidth="3"
+                 strokeLinecap="square" />);
   }
 });
 
