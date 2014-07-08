@@ -1,5 +1,5 @@
 
-var NNViz = (function(nnviz) {
+var NNViz = (function(nnviz, _) {
 
     nnviz.geometry = {
 
@@ -40,7 +40,7 @@ var NNViz = (function(nnviz) {
           coords.cx = coords.x + radius;
           coords.cy = coords.y + radius;
           coords.inputPoint = {x: coords.x, y: coords.cy};
-          coords.outpusPoint = {x: coords.x + (2*radius), y: coords.cy};
+          coords.outputPoint = {x: coords.x + (2*radius), y: coords.cy};
           return coords;
         },
 
@@ -60,6 +60,15 @@ var NNViz = (function(nnviz) {
           return layer;
         },
 
+        connections: function(neuronsFrom, neuronsTo) {
+          return _.flatten(_.map(neuronsFrom, function(from){
+            console.log("from", from);
+            return _.map(neuronsTo, function(to){
+              return {start: from.outputPoint, end: to.inputPoint};
+            });
+          }));
+        },
+
         getGeometry: function(sizes, canvasWidth, canvasHeight){
           var g = {};
           console.log(this);
@@ -68,6 +77,11 @@ var NNViz = (function(nnviz) {
           g.layers = sizes.map(function(size, index){
             return(this.calculateLayer(size, g.columnWidth, canvasHeight, index));
           }, this);
+          g.connections = [];
+          for(var i=0; i<g.layers.length-1; i++){
+            g.connections.push(this.connections(g.layers[i].nodes, g.layers[i+1].nodes));
+          }
+          console.log("g.connections", g.connections);
           return g;
 
         }
@@ -76,4 +90,4 @@ var NNViz = (function(nnviz) {
 
     return nnviz;
 
-}(NNViz || {}));
+}(NNViz || {}, _));

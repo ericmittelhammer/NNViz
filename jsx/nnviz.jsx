@@ -29,6 +29,28 @@ var NetworkLayer = React.createClass({
   }
 });
 
+var Connection = React.createClass({
+  render: function(){
+    return(<line x1={this.props.start.x} 
+                 y1={this.props.start.y} 
+                 x2={this.props.end.x} 
+                 y2={this.props.end.y}
+                 stroke="black"
+                 stroke-width="2" />);
+  }
+});
+
+var ConnectionSet = React.createClass({
+  render: function() {
+    var g = this.props.geometry;
+    var connections = _.map(g, function(connection){
+      return (<Connection start={connection.start} end={connection.end} />)
+    });
+
+    return(<g>{connections}</g>)
+  }
+});
+
 var Network = React.createClass({
     render: function() {
       //var x = 1000;
@@ -44,16 +66,24 @@ var Network = React.createClass({
         );
       }, this);
 
+      var connections = _.map(g.connections, function(connectionSet){
+        console.log(connectionSet);
+        return(
+          <ConnectionSet geometry={connectionSet} />
+        );
+      }, this);
+
       return (
         <svg width={this.props.width} height={this.props.height}>
           {networkLayers}
+          {connections}
         </svg>
       );
     }
 });
 
 
-var NNViz = (function(nnviz, React, brain, doc){
+var NNViz = (function(nnviz, React, brain, doc, _){
     
     nnviz.init = function(elementId, network) {
       var net = new brain.NeuralNetwork();
@@ -66,4 +96,4 @@ var NNViz = (function(nnviz, React, brain, doc){
 
     return nnviz;
 
-}(NNViz || {}, React, brain, document));
+}(NNViz || {}, React, brain, document, _));
