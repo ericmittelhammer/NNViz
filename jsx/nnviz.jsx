@@ -76,8 +76,8 @@ var Network = React.createClass({
 
       return (
         <svg width={this.props.width} height={this.props.height}>
-          {networkLayers}
           {connections}
+          {networkLayers}
         </svg>
       );
     }
