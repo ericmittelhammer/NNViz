@@ -11,8 +11,10 @@ function lookupsInOrder(lookup) {
 
 var Node = React.createClass({
   render: function() {
-    return(
+    return(<g>
       <circle cx={this.props.cx} cy={this.props.cy} r={this.props.radius} fill="#3498db" />
+      <text x={this.props.cx} y={this.props.cy}>{this.props.label}</text>
+      </g>
     );
   }
 });
@@ -21,9 +23,11 @@ var NetworkLayer = React.createClass({
   render: function() {
     var g = this.props.geometry;
     console.log(g);
-    var nodes = g.nodes.map(function(node){
-      return(<Node cx={node.cx} cy={node.cy} radius={g.radius} />)
-    });
+    var nodes = g.nodes.map(function(node, index){
+      var label = '';
+      if 
+      return(<Node cx={node.cx} cy={node.cy} radius={g.radius} label={this.props.values[index]}/>)
+    }, this);
       
     return(<g>{nodes}</g>);
   }
@@ -63,7 +67,7 @@ var Network = React.createClass({
 
       var networkLayers = g.layers.map(function(l, index){
         return(
-          <NetworkLayer geometry={l} output={this.props.network.outputs[index]}/>
+          <NetworkLayer geometry={l} values={this.props.network.layers[index]}/>
         );
       }, this);
 
