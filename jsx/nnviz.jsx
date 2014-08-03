@@ -16,9 +16,19 @@ var Node = React.createClass({
   },
 
   render: function() {
+    var fontSizePx = this.props.radius / 2;
+    // React doesn't support alignment-baseline, so we have to manually
+    // shift the text down 1/2 the hight of a line
+    var textVerticalOffset = fontSizePx / 2;
+    var neuronStyle={fontFamily:"sans-serif", fontSize: fontSizePx + "px", padding:0}
+    var outputString = this.props.output.toString().slice(0,5);
     return(<g>
-      <circle cx={this.props.cx} cy={this.props.cy} r={this.props.radius} fill="#3498db" />
-      <text x={this.props.cx - this.props.radius} y={this.props.cy - (this.props.radius *0.25)}>{this.props.output}</text>
+      <circle className="neuron" cx={this.props.cx} cy={this.props.cy} r={this.props.radius} fill="#3498db" />
+      <text
+        x={this.props.cx}
+        y={this.props.cy + textVerticalOffset}
+        textAnchor="middle"
+        style={neuronStyle}>{outputString}</text>
       </g>
     );
   }
@@ -32,16 +42,16 @@ var NetworkLayer = React.createClass({
       var label = '';
       return(<Node cx={node.cx} cy={node.cy} radius={g.radius} output={this.props.outputs[index] } />)
     }, this);
-      
+
     return(<g>{nodes}</g>);
   }
 });
 
 var Connection = React.createClass({
   render: function(){
-    return(<line x1={this.props.start.x} 
-                 y1={this.props.start.y} 
-                 x2={this.props.end.x} 
+    return(<line x1={this.props.start.x}
+                 y1={this.props.start.y}
+                 x2={this.props.end.x}
                  y2={this.props.end.y}
                  stroke="#34495e"
                  strokeWidth="3"
@@ -88,7 +98,11 @@ var Network = React.createClass({
           labels = lookupsInOrder(this.state.network.outputLookup);
         }
         return(
-          <NetworkLayer geometry={l} outputs={this.state.network.outputs[index]} updateNetwork={(index == 0) ? this.updateNetwork : function(a,b){} }/>
+          <NetworkLayer
+            geometry={l}
+            outputs={this.state.network.outputs[index]}
+            // if this
+            updateNetwork={(index == 0) ? this.updateNetwork : function(a,b){} }/>
         );
       }, this);
 
@@ -102,7 +116,7 @@ var Network = React.createClass({
       console.log(this);
 
       return (
-        <svg width={this.props.width} height={this.props.height}>
+        <svg width={this.props.canvasWidth} height={this.props.canvasHeight}>
           {connections}
           {networkLayers}
         </svg>
@@ -112,10 +126,11 @@ var Network = React.createClass({
 
 
 var NNViz = (function(nnviz, React, brain, doc, _){
-    
+
     nnviz.init = function(elementId, network) {
       var net = new brain.NeuralNetwork();
       net.fromJSON(network);
+      net.run({"a": 1, "b":0});
       var container = doc.getElementById(elementId);
       console.log(nnviz);
       var geometry = nnviz.geometry.getGeometry(net.sizes, container.clientWidth, container.clientHeight);
